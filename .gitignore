@@ -1,0 +1,18 @@
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+
+# Generated build/test output
+/bin/
+/dist/
+coverage.out
+coverage.html
+*.test
+*.prof
+*.log
+
+# Local editor state
+.idea/
+.vscode/
+.DS_Store

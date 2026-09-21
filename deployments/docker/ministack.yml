@@ -1,0 +1,23 @@
+services:
+  ministack:
+    image: ministackorg/ministack:1.5.14
+    environment:
+      MINISTACK_REGION: ${AWS_REGION:-us-east-1}
+      AWS_DEFAULT_REGION: ${AWS_REGION:-us-east-1}
+      SQS_INGESTION_PRINCIPAL: ${SQS_INGESTION_PRINCIPAL:-arn:aws:iam::000000000000:role/wager-ingestion}
+      SQS_SERVICE_PRINCIPAL: ${SQS_SERVICE_PRINCIPAL:-arn:aws:iam::000000000000:role/wallet-service}
+    ports:
+      - "${MINISTACK_PORT:-4566}:4566"
+    volumes:
+      - ./ministack/init-queues.sh:/etc/localstack/init/ready.d/init-queues.sh:ro
+    healthcheck:
+      test: ["CMD-SHELL", "test -f /tmp/wallet-queues-ready && python3 -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:4566/_ministack/health', timeout=3)\""]
+      interval: 2s
+      timeout: 5s
+      retries: 60
+      start_period: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 768M

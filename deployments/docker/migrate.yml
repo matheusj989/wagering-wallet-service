@@ -1,0 +1,17 @@
+services:
+  migrate:
+    image: migrate/migrate:v4.20.1
+    volumes:
+      - ../../migrations:/migrations:ro
+    command:
+      - "-path=/migrations"
+      - "-database=${MIGRATE_DATABASE_URL:-postgres://wallet_owner:wallet_owner@postgres:5432/wallet?sslmode=disable}"
+      - "up"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 128M

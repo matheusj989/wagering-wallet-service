@@ -1,0 +1,22 @@
+name: wagering-wallet-service
+
+include:
+  - deployments/docker/postgres.yml
+  - deployments/docker/keycloak.yml
+  - deployments/docker/ministack.yml
+  - deployments/docker/migrate.yml
+
+services:
+  api:
+    extends:
+      file: deployments/app/app.yml
+      service: api
+    depends_on:
+      postgres:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+      ministack:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
