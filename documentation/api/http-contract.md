@@ -1,6 +1,6 @@
 # Contrato HTTP
 
-Fechado em 21/09/2026 a partir do README do desafio (§9) e do plano (§9.1 e §9.2). Os requisitos normativos estão nas specs `http-api`, `wager-transaction-processing`, `idempotency` e `authentication-authorization` do change `implement-wagering-wallet-service`. Este documento é a referência de uso (exemplos e tabelas) e alimenta a coleção do Postman.
+Referência de uso do contrato HTTP (exemplos e tabelas), derivada do README do desafio (§9). Alimenta a coleção do Postman.
 
 ## 1. Convenções
 

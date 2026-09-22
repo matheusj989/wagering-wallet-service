@@ -1,6 +1,6 @@
 # Contratos de mensageria
 
-Fechado em 21/09/2026 a partir do README (§10 e §11) e do plano (§3.4, §3.5, §9.3, §9.6). Normativo: specs `sqs-consumer` e `outbox-publishing`.
+Contratos de mensageria derivados do README do desafio (§10 e §11).
 
 ## 1. Filas
 
@@ -12,7 +12,7 @@ Fechado em 21/09/2026 a partir do README (§10 e §11) e do plano (§3.4, §3.5,
 
 Criadas pelo script `deployments/docker/ministack/init-queues.sh` (hook `ready.d` do MiniStack) e, nos testes, pelo helper `testenv` com nomes únicos por teste (sufixo, mantendo `.fifo`). Em produção o mesmo script serve de documentação do provisionamento.
 
-Política de acesso (documentada e aplicada com `SetQueueAttributes Policy`, mesmo que o emulador não a imponha): só o principal de ingestão dos provedores pode `sqs:SendMessage` em `wager-transactions.fifo`; só o principal do wallet-service pode `sqs:ReceiveMessage`, `sqs:DeleteMessage`, `sqs:ChangeMessageVisibility`, `sqs:GetQueueAttributes` nela e `sqs:SendMessage` na DLQ e em `wallet-events.fifo`. A fronteira de confiança é um serviço **interno de ingestão**: ele autentica o provedor a montante e define `providerId` com base nessa identidade; provedores não possuem credenciais diretas da fila. IAM autentica/autoriza o produtor, mas não valida o `providerId` dentro do JSON. O consumidor confia nessa responsabilidade da ingestão e executa as validações de domínio. Conforme revisão aprovada, esta premissa fica documentada; implementar ingestão, gateway ou assinatura de mensagem está fora deste change. Em MiniStack, verificar a presença da política não prova sua imposição.
+Política de acesso (documentada e aplicada com `SetQueueAttributes Policy`, mesmo que o emulador não a imponha): só o principal de ingestão dos provedores pode `sqs:SendMessage` em `wager-transactions.fifo`; só o principal do wallet-service pode `sqs:ReceiveMessage`, `sqs:DeleteMessage`, `sqs:ChangeMessageVisibility`, `sqs:GetQueueAttributes` nela e `sqs:SendMessage` na DLQ e em `wallet-events.fifo`. A fronteira de confiança é um serviço **interno de ingestão**: ele autentica o provedor a montante e define `providerId` com base nessa identidade; provedores não possuem credenciais diretas da fila. IAM autentica/autoriza o produtor, mas não valida o `providerId` dentro do JSON. O consumidor confia nessa responsabilidade da ingestão e executa as validações de domínio. Implementar ingestão, gateway ou assinatura de mensagem está fora do escopo desta entrega. Em MiniStack, verificar a presença da política não prova sua imposição.
 
 Credenciais locais: `AWS_ACCESS_KEY_ID=test`, `AWS_SECRET_ACCESS_KEY=test`, `AWS_REGION=us-east-1`, `SQS_ENDPOINT=http://localhost:4566`.
 

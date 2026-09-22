@@ -124,7 +124,7 @@ O helper `test/testenv` sobe a infraestrutura uma vez por execução a partir do
 
 Os processos filhos são compilados com `CGO_ENABLED=1 go build -race -tags failpoints` e executados com `GORACE="halt_on_error=1 exitcode=66"`. O helper acompanha a saída dos dois streams e falha o teste se aparecer `DATA RACE` ou saída 66, inclusive nos cenários que esperam morte por failpoint.
 
-O ensaio externo com 50 carteiras, lotes e reinício das três réplicas está em [test/compose/README.md](test/compose/README.md). Os resultados da revisão final estão em [documentation/validation-2026-09-21.md](documentation/validation-2026-09-21.md).
+O ensaio externo com 50 carteiras, lotes e reinício das três réplicas está em [test/compose/README.md](test/compose/README.md). Os resultados da validação final estão em [documentation/validation-2026-09-21.md](documentation/validation-2026-09-21.md).
 
 Para rodar um cenário específico:
 
@@ -173,7 +173,7 @@ internal/mocks                     mocks gerados a partir dos contratos
 migrations                         schema versionado
 deployments                        um YAML por serviço e o Dockerfile da aplicação
 test/testenv test/integration      infraestrutura e cenários ponta a ponta
-documentation                      contratos, plano histórico e Postman
+documentation                      enunciado, contratos, validação e Postman
 ```
 
 ## Observabilidade

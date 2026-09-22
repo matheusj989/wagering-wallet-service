@@ -246,12 +246,11 @@ O scheduler em `internal/infrastructure/jobs` roda cada job num ticker próprio.
 - **A política da fila não é imposta pelo emulador.** O MiniStack aceita e devolve a policy, mas não a aplica. Em produção ela seria o controle real; aqui serve como documentação executável do desenho.
 - **`FAILED` não emite evento.** É estado de auditoria, visível por consulta, log e métrica.
 - **Moedas.** Só BRL e USD, e sem conversão. Operação numa moeda suportada diferente da carteira é rejeição auditável, não erro de validação.
-- **Validação histórica.** O relatório em `documentation/plan/validation-2026-09-20.md` foi feito em PostgreSQL 16 sobre um rascunho anterior do schema. Ele documenta como as decisões foram tomadas; a prova do schema desta entrega é a suíte de integração, que roda em PostgreSQL 18.6.
 - **Fora do escopo.** Ledger de partidas dobradas, tracing com OpenTelemetry, dashboards e teste de carga são diferenciais opcionais do desafio e não foram feitos. O serviço de ingestão que publica na fila também não faz parte da entrega: a fronteira está documentada, não implementada.
 
 ## Evidências e manutenção dos testes
 
-O relatório reproduzível desta revisão está em [documentation/validation-2026-09-21.md](documentation/validation-2026-09-21.md). Os helpers de `test/testenv` encapsulam processos, bancos, filas, tokens, rotação de chaves e proxies de falha. O supervisor distingue SIGKILL esperado de crash inesperado e sempre reprova diagnóstico de corrida ou saída 66, mesmo com failpoint armado.
+O relatório da validação final está em [documentation/validation-2026-09-21.md](documentation/validation-2026-09-21.md). Os helpers de `test/testenv` encapsulam processos, bancos, filas, tokens, rotação de chaves e proxies de falha. O supervisor distingue SIGKILL esperado de crash inesperado e sempre reprova diagnóstico de corrida ou saída 66, mesmo com failpoint armado.
 
 O teste com tag `compose` usa o artefato Docker com três réplicas: publica lotes SQS, força replays HTTP/SQS com identidades de transporte distintas, reconcilia 50 carteiras e confere a entrega dos eventos da outbox. Uma segunda fase confere os mesmos dados depois de reiniciar todas as APIs. Isso demonstra os cenários exercitados; não é medição de capacidade ou benchmark de latência.
 
